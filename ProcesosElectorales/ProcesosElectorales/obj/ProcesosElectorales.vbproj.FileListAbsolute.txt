@@ -1,0 +1,11 @@
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\bin\Debug\ProcesosElectorales.exe
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\bin\Debug\ProcesosElectorales.pdb
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\obj\Debug\ProcesosElectorales.FormNuevo.resources
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\obj\Debug\ProcesosElectorales.FormOpciones.resources
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\obj\Debug\ProcesosElectorales.FormScan.resources
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\obj\Debug\ProcesosElectorales.FormSelectProceso.resources
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\obj\Debug\ProcesosElectorales.MainForm.resources
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\obj\Debug\ProcesosElectorales.vbproj.GenerateResource.Cache
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\obj\Debug\ProcesosElectorales.exe
+C:\Users\cfernandez\Documents\Projects\SharpDevelop Projects\ProcesosElectorales\obj\Debug\ProcesosElectorales.pdb
