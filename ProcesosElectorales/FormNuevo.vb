@@ -93,7 +93,7 @@ Public Partial Class FormNuevo
 	End Sub
 	
 	Sub CreateTable()
-		Using MyReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(importFile.ToString, System.Text.Encoding.UTF32)
+		Using MyReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(importFile.ToString, System.Text.Encoding.UTF8)
 			MyReader.TextFieldType = FileIO.FieldType.Delimited
 			MyReader.SetDelimiters(";")
 			Dim currentRow As String()
@@ -258,7 +258,7 @@ Public Partial Class FormNuevo
 	End Sub
 	
 	Sub NewProceso()
-		
+		' TODO?
 	End Sub
 	
 End Class

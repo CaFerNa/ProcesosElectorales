@@ -18,6 +18,7 @@ Public Partial Class FormOpciones
 	Dim base As String = ""
 	Dim word As String = ""
 	Dim myColVisibles As String = ""
+	Dim formSize As String =""
 	Dim MyConnection As New OleDbConnection()
 	Dim sqlCommand As New OleDbCommand
 	
@@ -56,6 +57,12 @@ Public Partial Class FormOpciones
 			("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "WordExe", Nothing)
 		Me.txtWord.Text = readWordExeValue
 		ChkBoxCelSetVisiblecols()
+'		Dim readSizeValue As String
+'		readSizeValue = My.Computer.Registry.GetValue _
+'			("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormSize", Nothing)
+'			My.Computer.Registry.CurrentUser.CreateSubKey("Software\cfr\Procesos Electorales")
+'			My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormSize", Me.ParentForm.Size.ToString)
+'		Me.formSize = readSizeValue
 	End Sub
 	
 	Sub BtnBaseClick(ByVal sender As Object, ByVal e As EventArgs)
@@ -109,6 +116,10 @@ Public Partial Class FormOpciones
 		return GetVisibleColumns()
 	End Function
 	
+	Function GetMainFormSize As String
+		return chkBoxMainFormSize.Checked.ToString
+	End Function
+	
 	Sub BtnImportClick(ByVal sender As Object, ByVal e As EventArgs)
 		openFileDialog1.InitialDirectory = "C:\\Users\\usuario\\Documents"
 		openFileDialog1.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*"
@@ -137,6 +148,7 @@ Public Partial Class FormOpciones
 			Using MyReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(seleccion.ToString, System.Text.Encoding.UTF7)
 				MyReader.TextFieldType = FileIO.FieldType.Delimited
 				MyReader.SetDelimiters(";")
+				Dim ckeckOut As Integer = vbYes
 				Dim currentRow As String()
 				While Not MyReader.EndOfData
 					Try
@@ -146,7 +158,7 @@ Public Partial Class FormOpciones
 						Dim sqlString As String = "INSERT INTO " & nombreTable & " VALUES('"
 						Dim col As Integer = 0
 						For Each currentField In currentRow
-							'CARGOFINAL es el 11
+							'CARGOFINAL es el 11 en el 2024
 							If col = 11 Then
 								Select Case currentField
 									Case "P"
@@ -173,13 +185,17 @@ Public Partial Class FormOpciones
 							End If
 							col+=1
 							sqlString = sqlString & currentField & "','"
-							'							MsgBox(sqlString)
+							'MsgBox(sqlString)
 						Next
-						sqlString = sqlString & "','SORTEO "& match &"')"
+						'sqlString = sqlString & "','SORTEO "& match &"')"
+						sqlString = sqlString & "','','SORTEO "& match &"')"
 						If MyReader.LineNumber <> 2 Then
 							sqlCommand.CommandText = sqlString
 							Try
-								'								MsgBox(sqlString)
+								'MsgBox(sqlString)
+								If (ckeckOut = vbYes) Then
+									ckeckOut = MsgBox(sqlString & vbCrLf & vbCrLf & "¿Volver a ver el mensaje?", MsgBoxStyle.YesNo)
+								End If						
 								sqlCommand.ExecuteNonQuery()
 							Catch ex As Exception
 								'								objStreamWriter.WriteLine(sqlCommand.CommandText)
@@ -218,7 +234,7 @@ Public Partial Class FormOpciones
 				Me.listBoxColumnas.SetItemChecked(i, False)
 			Else
 				Me.listBoxColumnas.SetItemChecked(i, True)
-			End If									
+			End If
 		Next
 	End Sub
 	
@@ -232,5 +248,9 @@ Public Partial Class FormOpciones
 				Me.listBoxColumnas.SetItemChecked(i, False)
 			Next
 		End If
+	End Sub
+	
+	Sub BtnBackupClick(ByVal sender As Object, ByVal e As EventArgs)
+		MsgBox(base)
 	End Sub
 End Class

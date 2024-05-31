@@ -3,9 +3,7 @@
 ' Usuario: cfernandez
 ' Fecha: 11/10/2018
 ' Hora: 11:40
-'
-' Para cambiar esta plantilla use Herramientas | Opciones | Codificación | Editar Encabezados Estándar
-'
+
 
 Option Explicit On
 
@@ -52,6 +50,7 @@ Public Partial Class MainForm
 		loadBaseOptions()
 		ConnData()
 		loadColVisibles()
+		LoadFormSize()
 		'setVisibleColumns(colVisibles)
 	End Sub
 	
@@ -89,6 +88,11 @@ Public Partial Class MainForm
 			SaveBaseOptions()
 			SaveWordOptions()
 			SaveColVisibles()
+			If opciones.GetMainFormSize = "True" Then
+				SaveFormSize()
+			Else
+				ClearFormSize()
+			End If
 			'SetVisibleColumns()
 			'SetMultiColumns(opciones.GetMultiSelect)
 			'Me.dataGridView1.SelectionMode = opciones.GetSelectCellMode
@@ -97,6 +101,9 @@ Public Partial Class MainForm
 			Me.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
 			'Me.dataGridView1 = New System.Windows.Forms.DataGridView
 			Me.dataGridView1.Update()
+			'			If formSize.Equals("True") Then
+			'				MsgBox("Ancho: " + Me.Size.Width.ToString + " Alto: " + Me.Size.Height.ToString)
+			'			End if
 			MsgBox("Se reiniciará para que tenga efecto",, "Info")
 		End If
 		opciones.Dispose()
@@ -123,6 +130,53 @@ Public Partial Class MainForm
 			My.Computer.Registry.CurrentUser.CreateSubKey("Software\cfr\Procesos Electorales")
 		End If
 		My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "BaseFile", dataBaseFile)
+	End Sub
+	
+	Sub loadFormSize()
+		Dim readFormW As String = Me.Width.ToString
+		Dim readFormH As String = Me.Height.ToString
+		readFormW = My.Computer.Registry.GetValue _
+			("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormW", Nothing)
+		readFormH = My.Computer.Registry.GetValue _
+			("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormH", Nothing)
+		If  String.IsNullOrEmpty(readFormW) Then
+			My.Computer.Registry.CurrentUser.CreateSubKey("Software\cfr\Procesos Electorales")
+			My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormW", readFormW)
+			My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormH", readFormH)
+		Else
+			Me.Width = CInt(readFormW)
+			Me.Height = CInt(readFormH)
+		End If
+	End Sub
+	
+	Sub SaveFormSize()
+		Dim readFormW As String
+		Dim readFormH As String
+		readFormW = My.Computer.Registry.GetValue _
+			("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormW", Nothing)
+		readFormH = My.Computer.Registry.GetValue _
+			("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormH", Nothing)
+		If  String.IsNullOrEmpty(readFormW) Then
+			My.Computer.Registry.CurrentUser.CreateSubKey("Software\cfr\Procesos Electorales")
+		End If
+		readFormW = Me.Width.ToString
+		readFormH = Me.Height.ToString
+		My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormW", readFormW)
+		My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormH", readFormH)
+	End Sub
+	
+	Sub ClearFormSize()
+		Dim readFormW As String
+		Dim readFormH As String
+		readFormW = My.Computer.Registry.GetValue _
+			("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormW", Nothing)
+		readFormH = My.Computer.Registry.GetValue _
+			("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormH", Nothing)
+		If  String.IsNullOrEmpty(readFormW) Then
+			My.Computer.Registry.CurrentUser.CreateSubKey("Software\cfr\Procesos Electorales")
+		End If
+		My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormW", "")
+		My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\cfr\Procesos Electorales", "FormH", "")
 	End Sub
 	
 	Sub loadTemplateFolderOptions()
@@ -515,7 +569,6 @@ Public Partial Class MainForm
 		Return combo
 	End Function
 	
-	
 	Sub LoadMainTable()
 		Try
 			Dim query As String = "SELECT * FROM  "& procesoElectoral
@@ -897,7 +950,7 @@ Sub ToolStripButtonSearchClick(ByVal sender As Object, ByVal e As EventArgs)
 	'dataGridView1.ClearSelection
 	Dim i As Integer = 0
 	Dim cell As DataGridViewCell = dataGridView1.Rows(0).cells(0)
-	Dim salida As Integer
+	'Dim salida As Integer
 	dataGridView1.Select()
 	cell.Selected = true
 	'For Each myRow  In dataGridView1.Rows
@@ -908,8 +961,9 @@ Sub ToolStripButtonSearchClick(ByVal sender As Object, ByVal e As EventArgs)
 				dataGridView1.CurrentCell = myCell
 				encontrado = True
 				i+=1
-				If MsgBox(strSearchString & " encontrado", MsgBoxStyle.OkCancel + MsgBoxStyle.Information, "Busqueda") = 1 Then
-					exit for
+				If MsgBox(strSearchString & " encontrado", MsgBoxStyle.OkCancel + MsgBoxStyle.Information, "Busqueda") = 2 Then
+					'exit for
+					exit Sub
 				End If
 				'MsgBox(strSearchString & " encontrado",, "Busqueda")
 			End If
@@ -921,6 +975,8 @@ Sub ToolStripButtonSearchClick(ByVal sender As Object, ByVal e As EventArgs)
 	If Not encontrado Then
 		MsgBox("No encontrado",,"Busqueda")
 	End If
+	Me.toolStripTextBox1.Focus
+	Me.toolStripTextBox1.Text = ""
 End Sub
 
 Sub ImportarBarcodes(ByVal numItems as Integer, ByVal items as String(), ByVal fecha as String, ByVal estado as String)
@@ -941,7 +997,7 @@ Sub ImportarBarcodes(ByVal numItems as Integer, ByVal items as String(), ByVal f
 		Dim MyDataReader As OleDbDataReader
 		Dim MyDataReader2 As OleDbDataReader
 		Dim n As Integer = 0
-		Dim result As String = ""
+		Dim resultEstado As String =""
 		Dim actualizar As Boolean = True
 		dataGridView1.ClearSelection()
 		For Each strLine As String In items
@@ -950,92 +1006,142 @@ Sub ImportarBarcodes(ByVal numItems as Integer, ByVal items as String(), ByVal f
 			MyCommand.CommandText = query
 			MyDataReader = MyCommand.ExecuteReader
 			While MyDataReader.Read
-				result = MyDataReader("ESTADO")
-			End While
-			MyDataReader.Close()
-			If result.Equals("REPETIDO") Then
-				actualizar = False
-				MsgBox("REPETIDO")
-				Else If result.Equals("EXCUSADO") Then
-				actualizar = False
-				MsgBox("EXCUSADO")
-				Else If result.Contains("ALEGACIONES") Then
-				actualizar = False
-				MsgBox("ALEGACIONES")
-			Else
-				actualizar = True
-			End If
+				resultEstado = MyDataReader("ESTADO")
+				'			End While
+				'			MyDataReader.Close()
+				
+				'			If resultEstado.Equals("REPETIDO") Then
+				'				actualizar = False
+				'				MsgBox("REPETIDO")
+				'				Else If resultEstado.Equals("EXCUSADO") Then
+				'				actualizar = False
+				'				MsgBox("EXCUSADO")
+				'				Else If resultEstado.Contains("ALEGACIONES") Then
+				'				actualizar = False
+				'				MsgBox("ALEGACIONES")
+				'				Else If resultEstado.Equals("NOTIFICADO & REMITIDO") Then
+				'				actualizar = False
+				'				MsgBox("NOTIFICADO & REMITIDO")
+				'				Else If (resultEstado.Equals("NOTIFICADO") and  not state  = "NOTIFICADO & REMITIDO")Then
+				'				actualizar = False
+				'				Else If resultEstado.Contains("IMPOSIBLE") Then
+				'				actualizar = False
+				'				MsgBox("IMPOSIBLE NOTIFICAR")
+				'			Else
+				'				actualizar = True
+				'			End If
+				
+				Select Case resultEstado
+					Case "REPETIDO"
+						actualizar = False
+						MsgBox("REPETIDO")
+					Case "EXCUSADO"
+						actualizar = False
+						MsgBox("EXCUSADO")
+					Case "ALEGACIONES"
+						actualizar = False
+						MsgBox("ALEGACIONES")
+					Case "NOTIFICADO"
+						If state = "NOTIFICADO & REMITIDO"
+						actualizar = True
+						Exit Select
+					Else
+						actualizar = False
+						MsgBox("NOTIFICADO")
+					End If
+				Case "NOTIFICADO & REMITIDO"
+					actualizar = False
+					MsgBox("NOTIFICADO & REMITIDO")
+				Case "IMPOSIBLE"
+					actualizar = False
+					MsgBox("IMPOSIBLE NOTIFICAR")
+				Case Else
+					actualizar = True
+			End Select
+			
 			If actualizar Then
 				query = "UPDATE " & procesoElectoral & " SET ESTADO = '" _
-				& state & "', FECHA = '" & dia & "' WHERE IDENT = '" & strLine & "'"
-				MyCommand.CommandText = query
-				MyCommand.ExecuteNonQuery()
-			End if
-			
-			'UPDATE IDENT (ORIGINAL)
-			'			query = "UPDATE " & procesoElectoral & " SET ESTADO = '" _
-			'			& state & "', FECHA = '" & dia & "' WHERE IDENT = '" & strLine & "' AND ESTADO NOT LIKE 'REPETIDO'"
-			'			MyCommand.CommandText = query
-			'			MyCommand.ExecuteNonQuery()
-			
-			'Aquí finaliza  pero si es imposible hay que seguir
-			'GET DATA
-			If state = "IMPOSIBLE NOTIFICAR" Then
-				query = "SELECT * FROM " & procesoElectoral & " WHERE IDENT = '" & strline & "'"
-				MyCommand.CommandText = query
-				MyDataReader = MyCommand.ExecuteReader
-				Dim secc, mesa, cargo, num, ident As String
-				Dim bucle As Int32
-				While MyDataReader.Read
-					If bucle < 1 Then
-						ListadoPrintHeader(False)
-					End If
-					mesa = MyDataReader("MESA").ToString
-					cargo = MyDataReader("CARGOFINAL").ToString
-					num = MyDataReader("SORTEO").ToString
-					secc = MyDataReader("SECC").ToString
-					num = Regex.Replace(num, "\D", "")
-					n = Convert.toInt32(num)
-					If n = 4 Then
-						MsgBox("Sorteo 4 ya nombrado!!")
-					End If
-					n = n + 1
-					query = "UPDATE " & procesoElectoral & " SET ESTADO = 'POR NOTIFICAR'" _
-					&" WHERE (SECC = '" & secc & "' AND MESA = '" & mesa & "' AND CARGOFINAL = '" & cargo & _
-					"' AND SORTEO = 'SORTEO " & String.Format(n) &"')"
-					MyCommand2.CommandText = query
-					MyCommand2.ExecuteNonQuery
-					query = "SELECT * FROM " & procesoElectoral & " WHERE (" _
-						& "SECC = '" & secc & "' AND MESA = '" & mesa & "' AND CARGOFINAL = '" & cargo _
-					& "' AND SORTEO = 'SORTEO " & String.Format(n) &"')"
-					MyCommand3.CommandText = query
-					MyDataReader2 = MyCommand3.ExecuteReader
-					While MyDataReader2.Read
-						ident = MyDataReader2("IDENT").ToString
-						For Each myRow As DataGridViewRow In Me.dataGridView1.Rows
-							For Each myCell As DataGridViewCell In myRow.Cells
-								If	InStr(myCell.Value.ToString, ident, CompareMethod.Text) Then
-									dataGridView1.CurrentCell = myCell
-									ListadoPrint(True)
-								End If
-							Next
-						Next
-					End While
-					MyDataReader2.Close()
-					bucle = bucle + 1
-				End While
-				MyDataReader.Close()
-				loadTemplateFolderOptions()
-				Process.Start("explorer.exe", templateFolder)
+				& state & "', FECHA = '" & dia & "' WHERE IDENT = '" & strLine & "' AND ESTADO NOT LIKE 'REPETIDO'"
+				MyCommand2.CommandText = query
+				MyCommand2.ExecuteNonQuery()
 			End If
-		Next
-		MyConnection.Close()
-		MyConnection.Open()
-		dt.AcceptChanges()
-		Application.Restart()
-	Catch ex As Exception
-		MsgBox(ex.ToString)
-	End Try
+			
+			
+			'			If actualizar Then
+			'				query = "UPDATE " & procesoElectoral & " SET ESTADO = '" _
+			'				& state & "', FECHA = '" & dia & "' WHERE IDENT = '" & strLine & "'"
+			'				MyCommand2.CommandText = query
+			'				MyCommand2.ExecuteNonQuery()
+			'			End If
+			
+		End While
+		MyDataReader.Close()
+		
+		
+		'UPDATE IDENT (ORIGINAL)
+		'			query = "UPDATE " & procesoElectoral & " SET ESTADO = '" _
+		'			& state & "', FECHA = '" & dia & "' WHERE IDENT = '" & strLine & "' AND ESTADO NOT LIKE 'REPETIDO'"
+		'			MyCommand.CommandText = query
+		'			MyCommand.ExecuteNonQuery()
+		
+		'Aquí finaliza  pero si es imposible hay que seguir
+		'GET DATA
+		If state = "IMPOSIBLE NOTIFICAR" Then
+			query = "SELECT * FROM " & procesoElectoral & " WHERE IDENT = '" & strline & "'"
+			MyCommand.CommandText = query
+			MyDataReader = MyCommand.ExecuteReader
+			Dim secc, mesa, cargo, num, ident As String
+			Dim bucle As Int32
+			While MyDataReader.Read
+				If bucle < 1 Then
+					ListadoPrintHeader(False)
+				End If
+				mesa = MyDataReader("MESA").ToString
+				cargo = MyDataReader("CARGOFINAL").ToString
+				num = MyDataReader("SORTEO").ToString
+				secc = MyDataReader("SECC").ToString
+				num = Regex.Replace(num, "\D", "")
+				n = Convert.toInt32(num)
+				If n = 4 Then
+					MsgBox("Sorteo 4 ya nombrado!!")
+				End If
+				n = n + 1
+				query = "UPDATE " & procesoElectoral & " SET ESTADO = 'POR NOTIFICAR'" _
+				&" WHERE (SECC = '" & secc & "' AND MESA = '" & mesa & "' AND CARGOFINAL = '" & cargo & _
+				"' AND SORTEO = 'SORTEO " & String.Format(n) &"')"
+				MyCommand2.CommandText = query
+				MyCommand2.ExecuteNonQuery
+				query = "SELECT * FROM " & procesoElectoral & " WHERE (" _
+					& "SECC = '" & secc & "' AND MESA = '" & mesa & "' AND CARGOFINAL = '" & cargo _
+				& "' AND SORTEO = 'SORTEO " & String.Format(n) &"')"
+				MyCommand3.CommandText = query
+				MyDataReader2 = MyCommand3.ExecuteReader
+				While MyDataReader2.Read
+					ident = MyDataReader2("IDENT").ToString
+					For Each myRow As DataGridViewRow In Me.dataGridView1.Rows
+						For Each myCell As DataGridViewCell In myRow.Cells
+							If	InStr(myCell.Value.ToString, ident, CompareMethod.Text) Then
+								dataGridView1.CurrentCell = myCell
+								ListadoPrint(True)
+							End If
+						Next
+					Next
+				End While
+				MyDataReader2.Close()
+				bucle = bucle + 1
+			End While
+			MyDataReader.Close()
+			loadTemplateFolderOptions()
+			Process.Start("explorer.exe", templateFolder)
+		End If
+	Next
+	MyConnection.Close()
+	MyConnection.Open()
+	dt.AcceptChanges()
+	Application.Restart()
+Catch ex As Exception
+	MsgBox(ex.ToString)
+End Try
 End Sub
 
 Function DniRepetido (ByVal ident As String) As Boolean
@@ -1106,4 +1212,10 @@ Sub ToolStripTextBox1KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
 	End If
 End Sub
 
+
+Sub BtnCambiarEstadoClick(ByVal sender As Object, ByVal e As EventArgs)
+	If chkBoxCambiaEstado.Checked Then
+		MsgBox("cambiar")
+	End If
+End Sub
 End Class

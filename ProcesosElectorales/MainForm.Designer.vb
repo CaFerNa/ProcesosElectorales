@@ -3,7 +3,7 @@
 ' Usuario: cfernandez
 ' Fecha: 11/10/2018
 ' Hora: 11:40
-' 
+'
 ' Para cambiar esta plantilla use Herramientas | Opciones | Codificación | Editar Encabezados Estándar
 '
 Partial Class MainForm
@@ -41,6 +41,8 @@ Partial Class MainForm
 		Me.dataSet1 = New System.Data.DataSet
 		Me.label1 = New System.Windows.Forms.Label
 		Me.panel1 = New System.Windows.Forms.Panel
+		Me.btnCambiarEstado = New System.Windows.Forms.Button
+		Me.chkBoxCambiaEstado = New System.Windows.Forms.CheckBox
 		Me.btnMesa = New System.Windows.Forms.Button
 		Me.btnQuitarFiltros = New System.Windows.Forms.Button
 		Me.cbxSecc = New System.Windows.Forms.ComboBox
@@ -78,6 +80,7 @@ Partial Class MainForm
 		Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
 		Me.toolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox
 		Me.toolStripButtonSearch = New System.Windows.Forms.ToolStripButton
+		Me.toolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
 		Me.openFileDialog1 = New System.Windows.Forms.OpenFileDialog
 		CType(Me.bindingSource1,System.ComponentModel.ISupportInitialize).BeginInit
 		CType(Me.dataSet1,System.ComponentModel.ISupportInitialize).BeginInit
@@ -125,6 +128,8 @@ Partial Class MainForm
 		'
 		'panel1
 		'
+		Me.panel1.Controls.Add(Me.btnCambiarEstado)
+		Me.panel1.Controls.Add(Me.chkBoxCambiaEstado)
 		Me.panel1.Controls.Add(Me.btnMesa)
 		Me.panel1.Controls.Add(Me.btnQuitarFiltros)
 		Me.panel1.Controls.Add(Me.cbxSecc)
@@ -152,13 +157,33 @@ Partial Class MainForm
 		Me.panel1.TabIndex = 4
 		Me.panel1.Visible = false
 		'
+		'btnCambiarEstado
+		'
+		Me.btnCambiarEstado.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+		Me.btnCambiarEstado.Location = New System.Drawing.Point(568, 658)
+		Me.btnCambiarEstado.Name = "btnCambiarEstado"
+		Me.btnCambiarEstado.Size = New System.Drawing.Size(122, 23)
+		Me.btnCambiarEstado.TabIndex = 25
+		Me.btnCambiarEstado.Text = "Cambiar Estado"
+		Me.btnCambiarEstado.UseVisualStyleBackColor = true
+		AddHandler Me.btnCambiarEstado.Click, AddressOf Me.BtnCambiarEstadoClick
+		'
+		'chkBoxCambiaEstado
+		'
+		Me.chkBoxCambiaEstado.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+		Me.chkBoxCambiaEstado.Location = New System.Drawing.Point(546, 658)
+		Me.chkBoxCambiaEstado.Name = "chkBoxCambiaEstado"
+		Me.chkBoxCambiaEstado.Size = New System.Drawing.Size(16, 18)
+		Me.chkBoxCambiaEstado.TabIndex = 24
+		Me.chkBoxCambiaEstado.UseVisualStyleBackColor = true
+		'
 		'btnMesa
 		'
 		Me.btnMesa.Anchor = System.Windows.Forms.AnchorStyles.Bottom
 		Me.btnMesa.Location = New System.Drawing.Point(1191, 656)
 		Me.btnMesa.Name = "btnMesa"
 		Me.btnMesa.Size = New System.Drawing.Size(56, 23)
-		Me.btnMesa.TabIndex = 23
+		Me.btnMesa.TabIndex = 12
 		Me.btnMesa.Text = "Mesa"
 		Me.btnMesa.UseVisualStyleBackColor = true
 		Me.btnMesa.Visible = false
@@ -170,7 +195,7 @@ Partial Class MainForm
 		Me.btnQuitarFiltros.Location = New System.Drawing.Point(1086, 656)
 		Me.btnQuitarFiltros.Name = "btnQuitarFiltros"
 		Me.btnQuitarFiltros.Size = New System.Drawing.Size(54, 23)
-		Me.btnQuitarFiltros.TabIndex = 22
+		Me.btnQuitarFiltros.TabIndex = 9
 		Me.btnQuitarFiltros.Text = "No Filtro"
 		Me.btnQuitarFiltros.UseVisualStyleBackColor = true
 		AddHandler Me.btnQuitarFiltros.Click, AddressOf Me.BtnQuitarFiltrosClick
@@ -182,7 +207,7 @@ Partial Class MainForm
 		Me.cbxSecc.Location = New System.Drawing.Point(396, 628)
 		Me.cbxSecc.Name = "cbxSecc"
 		Me.cbxSecc.Size = New System.Drawing.Size(40, 21)
-		Me.cbxSecc.TabIndex = 21
+		Me.cbxSecc.TabIndex = 3
 		'
 		'label7
 		'
@@ -210,7 +235,7 @@ Partial Class MainForm
 		Me.cmbBoxSorteo.Location = New System.Drawing.Point(976, 629)
 		Me.cmbBoxSorteo.Name = "cmbBoxSorteo"
 		Me.cmbBoxSorteo.Size = New System.Drawing.Size(92, 21)
-		Me.cmbBoxSorteo.TabIndex = 18
+		Me.cmbBoxSorteo.TabIndex = 7
 		'
 		'label5
 		'
@@ -229,7 +254,7 @@ Partial Class MainForm
 		Me.cmbBoxCargo.Location = New System.Drawing.Point(768, 628)
 		Me.cmbBoxCargo.Name = "cmbBoxCargo"
 		Me.cmbBoxCargo.Size = New System.Drawing.Size(147, 21)
-		Me.cmbBoxCargo.TabIndex = 16
+		Me.cmbBoxCargo.TabIndex = 6
 		'
 		'dataGridView1
 		'
@@ -241,15 +266,17 @@ Partial Class MainForm
 						Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
 		Me.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
 		Me.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-		Me.dataGridView1.Location = New System.Drawing.Point(3, 0)
+		Me.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
+		Me.dataGridView1.Location = New System.Drawing.Point(4, 0)
 		Me.dataGridView1.Name = "dataGridView1"
 		Me.dataGridView1.RowHeadersVisible = false
 		Me.dataGridView1.RowTemplate.Height = 24
 		Me.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
 		Me.dataGridView1.ShowCellErrors = false
 		Me.dataGridView1.ShowRowErrors = false
-		Me.dataGridView1.Size = New System.Drawing.Size(1360, 622)
+		Me.dataGridView1.Size = New System.Drawing.Size(1359, 615)
 		Me.dataGridView1.TabIndex = 3
+		AddHandler Me.dataGridView1.CellDoubleClick, AddressOf Me.DataGridView1CellDoubleClick
 		'
 		'label4
 		'
@@ -268,7 +295,7 @@ Partial Class MainForm
 		Me.cboxNotificado.Location = New System.Drawing.Point(568, 628)
 		Me.cboxNotificado.Name = "cboxNotificado"
 		Me.cboxNotificado.Size = New System.Drawing.Size(147, 21)
-		Me.cboxNotificado.TabIndex = 14
+		Me.cboxNotificado.TabIndex = 5
 		'
 		'chkBoxTodos
 		'
@@ -277,7 +304,7 @@ Partial Class MainForm
 		Me.chkBoxTodos.Margin = New System.Windows.Forms.Padding(2)
 		Me.chkBoxTodos.Name = "chkBoxTodos"
 		Me.chkBoxTodos.Size = New System.Drawing.Size(60, 21)
-		Me.chkBoxTodos.TabIndex = 13
+		Me.chkBoxTodos.TabIndex = 11
 		Me.chkBoxTodos.Text = "Todos"
 		Me.chkBoxTodos.UseVisualStyleBackColor = true
 		AddHandler Me.chkBoxTodos.CheckedChanged, AddressOf Me.ChkBoxTodosCheckedChanged
@@ -288,7 +315,7 @@ Partial Class MainForm
 		Me.btnFiltrar.Location = New System.Drawing.Point(1086, 628)
 		Me.btnFiltrar.Name = "btnFiltrar"
 		Me.btnFiltrar.Size = New System.Drawing.Size(56, 23)
-		Me.btnFiltrar.TabIndex = 12
+		Me.btnFiltrar.TabIndex = 8
 		Me.btnFiltrar.Text = "Filtrar"
 		Me.btnFiltrar.UseVisualStyleBackColor = true
 		AddHandler Me.btnFiltrar.Click, AddressOf Me.BtnFiltrarClick
@@ -300,7 +327,7 @@ Partial Class MainForm
 		Me.btnOptions.Location = New System.Drawing.Point(1325, 621)
 		Me.btnOptions.Name = "btnOptions"
 		Me.btnOptions.Size = New System.Drawing.Size(38, 38)
-		Me.btnOptions.TabIndex = 5
+		Me.btnOptions.TabIndex = 1
 		Me.btnOptions.UseVisualStyleBackColor = true
 		AddHandler Me.btnOptions.Click, AddressOf Me.btnOptionsClick
 		'
@@ -311,7 +338,7 @@ Partial Class MainForm
 		Me.cmbMesa.Location = New System.Drawing.Point(481, 628)
 		Me.cmbMesa.Name = "cmbMesa"
 		Me.cmbMesa.Size = New System.Drawing.Size(34, 21)
-		Me.cmbMesa.TabIndex = 10
+		Me.cmbMesa.TabIndex = 4
 		'
 		'label3
 		'
@@ -329,7 +356,7 @@ Partial Class MainForm
 		Me.cmbColegio.Location = New System.Drawing.Point(93, 628)
 		Me.cmbColegio.Name = "cmbColegio"
 		Me.cmbColegio.Size = New System.Drawing.Size(255, 21)
-		Me.cmbColegio.TabIndex = 8
+		Me.cmbColegio.TabIndex = 2
 		'
 		'label2
 		'
@@ -346,7 +373,7 @@ Partial Class MainForm
 		Me.btnPrint.Location = New System.Drawing.Point(1191, 628)
 		Me.btnPrint.Name = "btnPrint"
 		Me.btnPrint.Size = New System.Drawing.Size(56, 23)
-		Me.btnPrint.TabIndex = 6
+		Me.btnPrint.TabIndex = 10
 		Me.btnPrint.Text = "Print"
 		Me.btnPrint.UseVisualStyleBackColor = true
 		AddHandler Me.btnPrint.Click, AddressOf Me.BtnPrintClick
@@ -357,8 +384,8 @@ Partial Class MainForm
 		Me.bindingNavigator1.CountItem = Me.bindingNavigatorCountItem
 		Me.bindingNavigator1.DeleteItem = Me.bindingNavigatorDeleteItem
 		Me.bindingNavigator1.Dock = System.Windows.Forms.DockStyle.Bottom
-		Me.bindingNavigator1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.bindingNavigatorMoveFirstItem, Me.bindingNavigatorMovePreviousItem, Me.bindingNavigatorSeparator, Me.bindingNavigatorPositionItem, Me.bindingNavigatorCountItem, Me.bindingNavigatorSeparator1, Me.bindingNavigatorMoveNextItem, Me.bindingNavigatorMoveLastItem, Me.bindingNavigatorSeparator2, Me.bindingNavigatorAddNewItem, Me.bindingNavigatorDeleteItem, Me.toolStripBtnSave, Me.toolStripSeparator2, Me.toolStripBtnImport, Me.toolStripSeparator1, Me.toolStripTextBox1, Me.toolStripButtonSearch})
-		Me.bindingNavigator1.Location = New System.Drawing.Point(0, 679)
+		Me.bindingNavigator1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.bindingNavigatorMoveFirstItem, Me.bindingNavigatorMovePreviousItem, Me.bindingNavigatorSeparator, Me.bindingNavigatorPositionItem, Me.bindingNavigatorCountItem, Me.bindingNavigatorSeparator1, Me.bindingNavigatorMoveNextItem, Me.bindingNavigatorMoveLastItem, Me.bindingNavigatorSeparator2, Me.bindingNavigatorAddNewItem, Me.bindingNavigatorDeleteItem, Me.toolStripBtnSave, Me.toolStripSeparator2, Me.toolStripBtnImport, Me.toolStripSeparator1, Me.toolStripTextBox1, Me.toolStripButtonSearch, Me.toolStripSeparator3})
+		Me.bindingNavigator1.Location = New System.Drawing.Point(0, 681)
 		Me.bindingNavigator1.MoveFirstItem = Me.bindingNavigatorMoveFirstItem
 		Me.bindingNavigator1.MoveLastItem = Me.bindingNavigatorMoveLastItem
 		Me.bindingNavigator1.MoveNextItem = Me.bindingNavigatorMoveNextItem
@@ -366,7 +393,7 @@ Partial Class MainForm
 		Me.bindingNavigator1.Name = "bindingNavigator1"
 		Me.bindingNavigator1.PositionItem = Me.bindingNavigatorPositionItem
 		Me.bindingNavigator1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-		Me.bindingNavigator1.Size = New System.Drawing.Size(1366, 27)
+		Me.bindingNavigator1.Size = New System.Drawing.Size(1366, 25)
 		Me.bindingNavigator1.TabIndex = 4
 		Me.bindingNavigator1.Text = "bindingNavigator1"
 		'
@@ -376,14 +403,14 @@ Partial Class MainForm
 		Me.bindingNavigatorAddNewItem.Image = CType(resources.GetObject("bindingNavigatorAddNewItem.Image"),System.Drawing.Image)
 		Me.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem"
 		Me.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true
-		Me.bindingNavigatorAddNewItem.Size = New System.Drawing.Size(23, 24)
+		Me.bindingNavigatorAddNewItem.Size = New System.Drawing.Size(23, 22)
 		Me.bindingNavigatorAddNewItem.Text = "Agregar nuevo"
 		Me.bindingNavigatorAddNewItem.Visible = false
 		'
 		'bindingNavigatorCountItem
 		'
 		Me.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem"
-		Me.bindingNavigatorCountItem.Size = New System.Drawing.Size(48, 24)
+		Me.bindingNavigatorCountItem.Size = New System.Drawing.Size(37, 22)
 		Me.bindingNavigatorCountItem.Text = "de {0}"
 		Me.bindingNavigatorCountItem.ToolTipText = "Número total de elementos"
 		'
@@ -393,7 +420,7 @@ Partial Class MainForm
 		Me.bindingNavigatorDeleteItem.Image = CType(resources.GetObject("bindingNavigatorDeleteItem.Image"),System.Drawing.Image)
 		Me.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem"
 		Me.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true
-		Me.bindingNavigatorDeleteItem.Size = New System.Drawing.Size(23, 24)
+		Me.bindingNavigatorDeleteItem.Size = New System.Drawing.Size(23, 22)
 		Me.bindingNavigatorDeleteItem.Text = "Eliminar"
 		Me.bindingNavigatorDeleteItem.Visible = false
 		'
@@ -403,7 +430,7 @@ Partial Class MainForm
 		Me.bindingNavigatorMoveFirstItem.Image = CType(resources.GetObject("bindingNavigatorMoveFirstItem.Image"),System.Drawing.Image)
 		Me.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem"
 		Me.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true
-		Me.bindingNavigatorMoveFirstItem.Size = New System.Drawing.Size(23, 24)
+		Me.bindingNavigatorMoveFirstItem.Size = New System.Drawing.Size(23, 22)
 		Me.bindingNavigatorMoveFirstItem.Text = "Mover primero"
 		'
 		'bindingNavigatorMovePreviousItem
@@ -412,13 +439,13 @@ Partial Class MainForm
 		Me.bindingNavigatorMovePreviousItem.Image = CType(resources.GetObject("bindingNavigatorMovePreviousItem.Image"),System.Drawing.Image)
 		Me.bindingNavigatorMovePreviousItem.Name = "bindingNavigatorMovePreviousItem"
 		Me.bindingNavigatorMovePreviousItem.RightToLeftAutoMirrorImage = true
-		Me.bindingNavigatorMovePreviousItem.Size = New System.Drawing.Size(23, 24)
+		Me.bindingNavigatorMovePreviousItem.Size = New System.Drawing.Size(23, 22)
 		Me.bindingNavigatorMovePreviousItem.Text = "Mover anterior"
 		'
 		'bindingNavigatorSeparator
 		'
 		Me.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator"
-		Me.bindingNavigatorSeparator.Size = New System.Drawing.Size(6, 27)
+		Me.bindingNavigatorSeparator.Size = New System.Drawing.Size(6, 25)
 		'
 		'bindingNavigatorPositionItem
 		'
@@ -432,7 +459,7 @@ Partial Class MainForm
 		'bindingNavigatorSeparator1
 		'
 		Me.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1"
-		Me.bindingNavigatorSeparator1.Size = New System.Drawing.Size(6, 27)
+		Me.bindingNavigatorSeparator1.Size = New System.Drawing.Size(6, 25)
 		'
 		'bindingNavigatorMoveNextItem
 		'
@@ -440,7 +467,7 @@ Partial Class MainForm
 		Me.bindingNavigatorMoveNextItem.Image = CType(resources.GetObject("bindingNavigatorMoveNextItem.Image"),System.Drawing.Image)
 		Me.bindingNavigatorMoveNextItem.Name = "bindingNavigatorMoveNextItem"
 		Me.bindingNavigatorMoveNextItem.RightToLeftAutoMirrorImage = true
-		Me.bindingNavigatorMoveNextItem.Size = New System.Drawing.Size(23, 24)
+		Me.bindingNavigatorMoveNextItem.Size = New System.Drawing.Size(23, 22)
 		Me.bindingNavigatorMoveNextItem.Text = "Mover siguiente"
 		'
 		'bindingNavigatorMoveLastItem
@@ -449,13 +476,13 @@ Partial Class MainForm
 		Me.bindingNavigatorMoveLastItem.Image = CType(resources.GetObject("bindingNavigatorMoveLastItem.Image"),System.Drawing.Image)
 		Me.bindingNavigatorMoveLastItem.Name = "bindingNavigatorMoveLastItem"
 		Me.bindingNavigatorMoveLastItem.RightToLeftAutoMirrorImage = true
-		Me.bindingNavigatorMoveLastItem.Size = New System.Drawing.Size(23, 24)
+		Me.bindingNavigatorMoveLastItem.Size = New System.Drawing.Size(23, 22)
 		Me.bindingNavigatorMoveLastItem.Text = "Mover último"
 		'
 		'bindingNavigatorSeparator2
 		'
 		Me.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2"
-		Me.bindingNavigatorSeparator2.Size = New System.Drawing.Size(6, 27)
+		Me.bindingNavigatorSeparator2.Size = New System.Drawing.Size(6, 25)
 		'
 		'toolStripBtnSave
 		'
@@ -463,14 +490,14 @@ Partial Class MainForm
 		Me.toolStripBtnSave.Image = CType(resources.GetObject("toolStripBtnSave.Image"),System.Drawing.Image)
 		Me.toolStripBtnSave.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.toolStripBtnSave.Name = "toolStripBtnSave"
-		Me.toolStripBtnSave.Size = New System.Drawing.Size(23, 24)
+		Me.toolStripBtnSave.Size = New System.Drawing.Size(23, 22)
 		Me.toolStripBtnSave.Text = "Guardar cambios"
 		AddHandler Me.toolStripBtnSave.Click, AddressOf Me.ToolStripBtnSaveClick
 		'
 		'toolStripSeparator2
 		'
 		Me.toolStripSeparator2.Name = "toolStripSeparator2"
-		Me.toolStripSeparator2.Size = New System.Drawing.Size(6, 27)
+		Me.toolStripSeparator2.Size = New System.Drawing.Size(6, 25)
 		'
 		'toolStripBtnImport
 		'
@@ -478,19 +505,19 @@ Partial Class MainForm
 		Me.toolStripBtnImport.Image = CType(resources.GetObject("toolStripBtnImport.Image"),System.Drawing.Image)
 		Me.toolStripBtnImport.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.toolStripBtnImport.Name = "toolStripBtnImport"
-		Me.toolStripBtnImport.Size = New System.Drawing.Size(23, 24)
+		Me.toolStripBtnImport.Size = New System.Drawing.Size(23, 22)
 		Me.toolStripBtnImport.Text = "toolStripButton1"
 		AddHandler Me.toolStripBtnImport.Click, AddressOf Me.ToolStripBtnImportClick
 		'
 		'toolStripSeparator1
 		'
 		Me.toolStripSeparator1.Name = "toolStripSeparator1"
-		Me.toolStripSeparator1.Size = New System.Drawing.Size(6, 27)
+		Me.toolStripSeparator1.Size = New System.Drawing.Size(6, 25)
 		'
 		'toolStripTextBox1
 		'
 		Me.toolStripTextBox1.Name = "toolStripTextBox1"
-		Me.toolStripTextBox1.Size = New System.Drawing.Size(76, 27)
+		Me.toolStripTextBox1.Size = New System.Drawing.Size(76, 25)
 		AddHandler Me.toolStripTextBox1.KeyDown, AddressOf Me.ToolStripTextBox1KeyDown
 		'
 		'toolStripButtonSearch
@@ -499,10 +526,15 @@ Partial Class MainForm
 		Me.toolStripButtonSearch.Image = CType(resources.GetObject("toolStripButtonSearch.Image"),System.Drawing.Image)
 		Me.toolStripButtonSearch.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.toolStripButtonSearch.Name = "toolStripButtonSearch"
-		Me.toolStripButtonSearch.Size = New System.Drawing.Size(23, 24)
+		Me.toolStripButtonSearch.Size = New System.Drawing.Size(23, 22)
 		Me.toolStripButtonSearch.Text = "..."
 		Me.toolStripButtonSearch.ToolTipText = "Buscar"
 		AddHandler Me.toolStripButtonSearch.Click, AddressOf Me.ToolStripButtonSearchClick
+		'
+		'toolStripSeparator3
+		'
+		Me.toolStripSeparator3.Name = "toolStripSeparator3"
+		Me.toolStripSeparator3.Size = New System.Drawing.Size(6, 25)
 		'
 		'openFileDialog1
 		'
@@ -532,6 +564,9 @@ Partial Class MainForm
 		Me.bindingNavigator1.PerformLayout
 		Me.ResumeLayout(false)
 	End Sub
+	Private toolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+	Private chkBoxCambiaEstado As System.Windows.Forms.CheckBox
+	Private btnCambiarEstado As System.Windows.Forms.Button
 	Private btnMesa As System.Windows.Forms.Button
 	Private btnQuitarFiltros As System.Windows.Forms.Button
 	Private label7 As System.Windows.Forms.Label
@@ -576,4 +611,8 @@ Partial Class MainForm
 	Private bindingSource1 As System.Windows.Forms.BindingSource
 	Private dataSet1 As System.Data.DataSet
 	Private dataGridView1 As System.Windows.Forms.DataGridView
+
+	Sub DataGridView1CellDoubleClick(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs)
+		Me.dataGridView1.BeginEdit(true)
+	End Sub
 End Class

@@ -52,6 +52,8 @@ Partial Class FormOpciones
 		Me.label4 = New System.Windows.Forms.Label
 		Me.txtWord = New System.Windows.Forms.TextBox
 		Me.chkBoxCellSelectAll = New System.Windows.Forms.CheckBox
+		Me.btnBackup = New System.Windows.Forms.Button
+		Me.chkBoxMainFormSize = New System.Windows.Forms.CheckBox
 		Me.SuspendLayout
 		'
 		'txbBase
@@ -186,13 +188,32 @@ Partial Class FormOpciones
 		'
 		'chkBoxCellSelectAll
 		'
-		Me.chkBoxCellSelectAll.Location = New System.Drawing.Point(12, 249)
+		Me.chkBoxCellSelectAll.Location = New System.Drawing.Point(182, 189)
 		Me.chkBoxCellSelectAll.Name = "chkBoxCellSelectAll"
-		Me.chkBoxCellSelectAll.Size = New System.Drawing.Size(160, 24)
+		Me.chkBoxCellSelectAll.Size = New System.Drawing.Size(117, 24)
 		Me.chkBoxCellSelectAll.TabIndex = 15
-		Me.chkBoxCellSelectAll.Text = "Seleccionar Todos"
+		Me.chkBoxCellSelectAll.Text = "Seleccionar Todas"
 		Me.chkBoxCellSelectAll.UseVisualStyleBackColor = true
 		AddHandler Me.chkBoxCellSelectAll.CheckedChanged, AddressOf Me.ChkBoxCellSelectModeCheckedChanged
+		'
+		'btnBackup
+		'
+		Me.btnBackup.Location = New System.Drawing.Point(97, 161)
+		Me.btnBackup.Name = "btnBackup"
+		Me.btnBackup.Size = New System.Drawing.Size(75, 38)
+		Me.btnBackup.TabIndex = 16
+		Me.btnBackup.Text = "Backup!"
+		Me.btnBackup.UseVisualStyleBackColor = true
+		AddHandler Me.btnBackup.Click, AddressOf Me.BtnBackupClick
+		'
+		'chkBoxMainFormSize
+		'
+		Me.chkBoxMainFormSize.Location = New System.Drawing.Point(12, 272)
+		Me.chkBoxMainFormSize.Name = "chkBoxMainFormSize"
+		Me.chkBoxMainFormSize.Size = New System.Drawing.Size(171, 24)
+		Me.chkBoxMainFormSize.TabIndex = 17
+		Me.chkBoxMainFormSize.Text = "Guardar Tamaño Formulario"
+		Me.chkBoxMainFormSize.UseVisualStyleBackColor = true
 		'
 		'FormOpciones
 		'
@@ -200,6 +221,8 @@ Partial Class FormOpciones
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
 		Me.ClientSize = New System.Drawing.Size(467, 317)
 		Me.ControlBox = false
+		Me.Controls.Add(Me.chkBoxMainFormSize)
+		Me.Controls.Add(Me.btnBackup)
 		Me.Controls.Add(Me.chkBoxCellSelectAll)
 		Me.Controls.Add(Me.btnWord)
 		Me.Controls.Add(Me.label4)
@@ -224,6 +247,8 @@ Partial Class FormOpciones
 		Me.ResumeLayout(false)
 		Me.PerformLayout
 	End Sub
+	Private chkBoxMainFormSize As System.Windows.Forms.CheckBox
+	Private btnBackup As System.Windows.Forms.Button
 	Private listBoxColumnas As System.Windows.Forms.CheckedListBox
 	Private chkBoxCellSelectAll As System.Windows.Forms.CheckBox
 	Private txtWord As System.Windows.Forms.TextBox
